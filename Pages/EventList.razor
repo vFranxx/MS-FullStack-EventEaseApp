@@ -1,0 +1,39 @@
+﻿@page "/events"
+
+@using EventEaseApp.Data
+@using EventEaseApp.Components
+@using EventEaseApp.Services
+
+@inject NavigationManager NavigationManager
+@inject IEventService EventService
+
+<h1>EventList</h1>
+
+<button @onclick="AddEvent" class="mb-3">Add new</button>
+
+@foreach (var item in events)
+{
+    <ul>
+        <EventCardComponent Title="@item.Title" Date="@item.Date.ToString()" Location="@item.Location" />
+    </ul>
+}
+
+@if (events.Count == 0)
+{
+    <p>No events registered...</p>    
+}
+
+@code {
+    private List<Event> events = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        events = await EventService.GetTasksAsync();
+    }
+
+    private void AddEvent()
+    {
+        NavigationManager.NavigateTo("/registerEvent");
+    }
+}

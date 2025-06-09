@@ -1,0 +1,13 @@
+﻿<div>
+    <div class="card">
+        <h3>@Title</h3>
+        <p><strong>Date:</strong> @Date</p>
+        <p><strong>Location:</strong> @Location</p>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Date { get; set; }
+    [Parameter] public string? Location { get; set; }
+}

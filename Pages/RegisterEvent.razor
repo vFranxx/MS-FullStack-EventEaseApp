@@ -1,0 +1,40 @@
+﻿@page "/registerEvent"
+@using EventEaseApp.Data
+
+@inject NavigationManager NavigationManager
+
+<h1 class="mb-3">RegisterEvent</h1>
+
+<EditForm Model="evnt" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label for="eventName" class="form-label">Event Name</label>
+        <InputText id="eventName" class="form-control" @bind-Value="@eventName" />
+    </div>
+    <div class="mb-3">
+        <label for="eventDate" class="form-label">Event Date</label>
+        <InputDate id="eventDate" class="form-control" @bind-Value="@eventDate" />
+    </div>
+    <div class="mb-3">
+        <label for="eventLocation" class="form-label">Event Location</label>
+        <InputText id="eventLocation" class="form-control" @bind-Value="@eventLocation" />
+    </div>
+    <button type="submit" class="btn btn-primary">Register Event</button>
+</EditForm>
+
+@code {
+    private Event evnt = new(); 
+
+    private string eventName;
+    private DateTime eventDate = DateTime.Now;
+    private string eventLocation;
+
+    private async Task HandleValidSubmit()
+    {
+        // Here you would typically call a service to save the event
+        // For now, we will just navigate back to the event list
+        NavigationManager.NavigateTo("/events");
+    }
+}
