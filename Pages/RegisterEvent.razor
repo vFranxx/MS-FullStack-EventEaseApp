@@ -10,16 +10,20 @@
     <ValidationSummary />
 
     <div class="mb-3">
-        <label for="eventName" class="form-label">Event Name</label>
-        <InputText id="eventName" class="form-control" @bind-Value="@eventName" />
+        <label class="form-label">Event Name</label>
+        <InputText class="form-control" @bind-Value="@eventName" />
     </div>
     <div class="mb-3">
-        <label for="eventDate" class="form-label">Event Date</label>
-        <InputDate id="eventDate" class="form-control" @bind-Value="@eventDate" />
+        <label class="form-label">Event Date</label>
+        <InputDate class="form-control" @bind-Value="@eventDate" />
     </div>
     <div class="mb-3">
-        <label for="eventLocation" class="form-label">Event Location</label>
-        <InputText id="eventLocation" class="form-control" @bind-Value="@eventLocation" />
+        <label class="form-label">Event Location</label>
+        <InputText class="form-control" @bind-Value="@eventLocation" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Event Description</label>
+        <InputTextArea class="form-control" @bind-Value="@eventDescription" />
     </div>
     <button type="submit" class="btn btn-primary">Register Event</button>
 </EditForm>
@@ -30,6 +34,7 @@
     private string eventName;
     private DateTime eventDate = DateTime.Now;
     private string eventLocation;
+    private string eventDescription;
 
     private async Task HandleValidSubmit()
     {

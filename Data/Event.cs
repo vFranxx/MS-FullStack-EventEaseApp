@@ -11,9 +11,14 @@ namespace EventEaseApp.Data
         public string Title { get; set; }
 
         [Required(ErrorMessage = "Please select a date.")]
+        [DataType(DataType.Date, ErrorMessage = "Please enter a valid date.")]
         public DateTime Date { get; set; }
 
+        [Required(ErrorMessage = "Please provide a location.")]
         [StringLength(50, ErrorMessage = "It cannot exceed 50 characters.")]
         public string Location { get; set; }
+
+        [Required(ErrorMessage = "Please provide a description.")]
+        public string Description { get; set; }
     }
 }

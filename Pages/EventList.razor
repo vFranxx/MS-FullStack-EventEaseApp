@@ -11,12 +11,22 @@
 
 <button @onclick="AddEvent" class="mb-3">Add new</button>
 
-@foreach (var item in events)
+@* @foreach (var item in events)
 {
     <ul>
-        <EventCardComponent Title="@item.Title" Date="@item.Date.ToString()" Location="@item.Location" />
+        <EventCardComponent Id="@item.Id" Title="@item.Title" Date="@item.Date.ToString()" Location="@item.Location" />
     </ul>
-}
+} This isn't as optimal as using virtualize*@
+
+@* 
+    This is the foreach equivalent, that's why it uses context="item"
+    Because Blazor needs to know what is the name of each element in the list
+*@
+<Virtualize Items="@events" Context="item">
+    <ul>
+        <EventCardComponent Id="@item.Id" Title="@item.Title" Date="@item.Date.ToString()" Location="@item.Location" />
+    </ul>
+</Virtualize>
 
 @if (events.Count == 0)
 {

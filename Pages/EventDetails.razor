@@ -1,0 +1,36 @@
+﻿@page "/event/{id:int}/details"
+
+@using EventEaseApp.Data
+@using EventEaseApp.Services
+
+@inject NavigationManager NavigationManager
+@inject IEventService EventService
+
+<h3>Event Details</h3>
+
+<p>Event ID: @Id</p>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">@EventData.Title</h5>
+        <h6 class="card-subtitle mb-2 text-muted">@EventData.Date.ToShortDateString()</h6>
+        <p class="card-text">@EventData.Description</p>
+        <p class="card-text"><strong>Location:</strong> @EventData.Location</p>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    private Event? EventData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        EventData = await EventService.GetEventByIdAsync(Id);
+        if (EventData == null)
+        {
+            // Handle case where event is not found
+            NavigationManager.NavigateTo("/events");
+        }
+    }
+}
