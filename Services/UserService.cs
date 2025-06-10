@@ -1,9 +1,17 @@
-﻿using EventEaseApp.Data;
+﻿using Blazored.LocalStorage;
+using EventEaseApp.Data;
+using System.Threading.Tasks;
 
 namespace EventEaseApp.Services
 {
     public class UserService : IUserService
     {
+        private readonly ILocalStorageService _localStorage;
+        public UserService(ILocalStorageService localStorage)
+        {
+            _localStorage = localStorage;
+        }
+
         private List<User> users = new();
         public User? CurrentUser { get; private set; }
         public bool IsAuthenticated => CurrentUser != null;
@@ -36,11 +44,12 @@ namespace EventEaseApp.Services
             return true;
         }
 
-        public bool Login(string email, string password)
+        public async Task<bool> Login(string email, string password)
         {
             CurrentUser = users.FirstOrDefault(u => u.Email == email && u.Password == password);
             if (CurrentUser != null)
             {
+                await _localStorage.SetItemAsync("currentUser", CurrentUser);
                 NotifyStateChanged();
                 return true; // Login successful
             }
@@ -49,9 +58,10 @@ namespace EventEaseApp.Services
 
         public event Action OnChange;
 
-        public void Logout()
+        public async Task Logout()
         {
             CurrentUser = null;
+            await _localStorage.RemoveItemAsync("currentUser");
             NotifyStateChanged();
         }
 

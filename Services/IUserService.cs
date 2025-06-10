@@ -5,8 +5,8 @@ namespace EventEaseApp.Services
     public interface IUserService
     {
         Task<bool> Register(User newUser);
-        bool Login(string email, string password);
-        void Logout();
+        Task<bool> Login(string email, string password);
+        Task Logout();
         event Action OnChange;
         User? CurrentUser { get; }  
         bool IsAuthenticated { get; }

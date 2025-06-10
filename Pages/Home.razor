@@ -58,7 +58,7 @@ else if (LoginFormVisible)
 
     private async Task OnLogin(LoginVM user)
     {
-        var success = UserService.Login(user.Email, user.Password);
+        var success = await UserService.Login(user.Email, user.Password);
         if (success)
         {
             showLoginSuccess = true;

@@ -58,9 +58,9 @@
         collapseNavMenu = !collapseNavMenu;
     }
 
-    private void Logout()
+    private async Task Logout()
     {
-        UserService.Logout();
+        await UserService.Logout();
         StateHasChanged(); // Refresh the UI after logout
     }
 }
