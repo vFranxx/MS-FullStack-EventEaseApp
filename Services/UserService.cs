@@ -41,6 +41,10 @@ namespace EventEaseApp.Services
              */
 
             users.Add(newUser);
+
+            // Save the updated users list to local storage
+            await _localStorage.SetItemAsync("users", users);
+
             return true;
         }
 
