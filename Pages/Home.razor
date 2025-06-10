@@ -7,13 +7,26 @@
 
 @inject IUserService UserService
 
+@implements IDisposable
+
 <PageTitle>Home</PageTitle>
 
 <h1>Welcome to EventEase!</h1>
-
-You already have an account? <a href="#" @onclick="ShowLoginForm">Login</a>.
-<br />
-Don't have an account? <a href="#" @onclick="ShowRegistrationForm">Register</a>.
+@if (UserService.IsAuthenticated)
+{
+    <p>Hello, @UserService.CurrentUser?.Name! You are logged in.</p>
+}
+else
+{
+    <p class="mb-5">
+        You'll need yo login in order to access the features of EventEase.
+    </p>
+    <p>
+        You already have an account? <a href="#" @onclick="ShowLoginForm">Login</a>.
+        <br />
+        Don't have an account? <a href="#" @onclick="ShowRegistrationForm">Register</a>.
+    </p>
+}
 
 @if (showRegistrationSuccess)
 {
@@ -44,22 +57,36 @@ else if (LoginFormVisible)
     private bool showRegistrationSuccess = false;
     private bool showLoginSuccess = false;
 
+    protected override void OnInitialized()
+    {
+        UserService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        UserService.OnChange -= StateHasChanged;
+    }
+
     private async Task OnRegistration(User user)
     {
-        await UserService.Register(user);
-        showRegistrationSuccess = true;
+        var result = await UserService.Register(user);
+        if (result)
+        {
+            showRegistrationSuccess = true;
+            StateHasChanged();
 
-        await Task.Delay(3000); 
-        RegistrationFormVisible = false;
-        showRegistrationSuccess = false;
+            await Task.Delay(3000); 
+            RegistrationFormVisible = false;
+            showRegistrationSuccess = false;
+        }
     }
 
     private bool loginFailed = false;
 
     private async Task OnLogin(LoginVM user)
     {
-        var success = await UserService.Login(user.Email, user.Password);
-        if (success)
+        var result = await UserService.Login(user.Email, user.Password);
+        if (result)
         {
             showLoginSuccess = true;
             StateHasChanged();
