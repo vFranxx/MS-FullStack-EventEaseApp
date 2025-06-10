@@ -1,0 +1,56 @@
+﻿@using EventEaseApp.Data
+@using EventEaseApp.Viewmodels
+
+<h2 class="mt-4">Login form</h2>
+
+@if (ShowError)
+{
+    <div class="alert alert-danger mt-3">Invalid email or password.</div>
+}
+
+<EditForm Model="LoginData" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label class="form-label">Email</label>
+        <InputText class="form-control" @bind-Value="LoginData.Email" @oninput="ResetError" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <InputText type="password" class="form-control" @bind-Value="LoginData.Password" @oninput="ResetError" />
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+</EditForm>
+
+@code {
+    [Parameter] public EventCallback<LoginVM> HandleValidSubmit { get; set; }
+    [Parameter] public bool loginFailed { get; set; }
+
+    private LoginVM LoginData = new();
+    private bool ShowError = false;
+
+    protected override void OnParametersSet()
+    {
+        ShowError = loginFailed;
+        if (ShowError)
+        {
+            // Clear password field on error
+            LoginData.Password = string.Empty;
+        }
+    }
+
+    private async Task OnValidSubmit()
+    {
+        // Ensure password is not empty before submit
+        if (!string.IsNullOrWhiteSpace(LoginData.Password))
+        {
+            await HandleValidSubmit.InvokeAsync(LoginData);
+        }
+    }
+
+    private void ResetError()
+    {
+        ShowError = false; 
+    }
+}

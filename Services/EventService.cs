@@ -20,5 +20,18 @@ namespace EventEaseApp.Services
             var eventItem = events.FirstOrDefault(e => e.Id == id);
             return Task.FromResult(eventItem);
         }
+
+        public Task AddEventAsync(Event newEvent) 
+        {
+            if (newEvent == null)
+            { 
+                throw new ArgumentNullException(nameof(newEvent));
+            }
+
+            newEvent.Id = events.Max(e => e.Id) + 1; // Simple ID generation
+            events.Add(newEvent);
+
+            return Task.CompletedTask;
+        }
     }
 }

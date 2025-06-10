@@ -1,7 +1,89 @@
 ﻿@page "/"
 
+@using EventEaseApp.Components.Users
+@using EventEaseApp.Data
+@using EventEaseApp.Services
+@using EventEaseApp.Viewmodels
+
+@inject IUserService UserService
+
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Welcome to EventEase!</h1>
 
-Welcome to your new app.
+You already have an account? <a href="#" @onclick="ShowLoginForm">Login</a>.
+<br />
+Don't have an account? <a href="#" @onclick="ShowRegistrationForm">Register</a>.
+
+@if (showRegistrationSuccess)
+{
+    <div class="alert alert-success mt-3">
+        Registration completed successfully! You can now login.
+    </div>
+}
+
+@if (showLoginSuccess)
+{
+    <div class="alert alert-success mt-3">
+        Login completed successfully!
+    </div>
+}
+
+@if (RegistrationFormVisible)
+{
+    <RegisterComponent HandleValidSubmit="OnRegistration" />
+}
+else if (LoginFormVisible)
+{
+    <LoginComponent HandleValidSubmit="OnLogin" loginFailed="@loginFailed"/>
+}
+
+@code{
+    private bool RegistrationFormVisible = false;
+    private bool LoginFormVisible = false;
+    private bool showRegistrationSuccess = false;
+    private bool showLoginSuccess = false;
+
+    private async Task OnRegistration(User user)
+    {
+        await UserService.Register(user);
+        showRegistrationSuccess = true;
+
+        await Task.Delay(3000); 
+        RegistrationFormVisible = false;
+        showRegistrationSuccess = false;
+    }
+
+    private bool loginFailed = false;
+
+    private async Task OnLogin(LoginVM user)
+    {
+        var success = UserService.Login(user.Email, user.Password);
+        if (success)
+        {
+            showLoginSuccess = true;
+            StateHasChanged();
+
+            LoginFormVisible = false;
+            showLoginSuccess = false;
+        }
+        else
+        {
+            loginFailed = true;
+        }
+    }
+
+    private void ShowRegistrationForm()
+    {
+        RegistrationFormVisible = true;
+        LoginFormVisible = false;
+        loginFailed = false; // Reset login failure state when showing registration form
+    }
+
+    private void ShowLoginForm()
+    {
+        LoginFormVisible = true;
+        RegistrationFormVisible = false;
+        loginFailed = false; // Reset login failure state when showing login form
+    }
+}

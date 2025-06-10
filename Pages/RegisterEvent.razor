@@ -1,7 +1,10 @@
 ﻿@page "/registerEvent"
+
 @using EventEaseApp.Data
+@using EventEaseApp.Services
 
 @inject NavigationManager NavigationManager
+@inject IEventService EventService
 
 <h1 class="mb-3">RegisterEvent</h1>
 
@@ -28,6 +31,13 @@
     <button type="submit" class="btn btn-primary">Register Event</button>
 </EditForm>
 
+@if (isSuccess)
+{
+    <div class="alert alert-success" role="alert">
+        ¡Evento registrado exitosamente!
+    </div>
+}
+
 @code {
     private Event evnt = new(); 
 
@@ -36,10 +46,23 @@
     private string eventLocation;
     private string eventDescription;
 
+    private bool isSuccess = false;
+
     private async Task HandleValidSubmit()
     {
-        // Here you would typically call a service to save the event
-        // For now, we will just navigate back to the event list
+        evnt = new Event
+        {
+            Title = eventName,
+            Date = eventDate,
+            Location = eventLocation,
+            Description = eventDescription
+        };
+
+        await EventService.AddEventAsync(evnt);
+        
+        isSuccess = true;
+        await Task.Delay(3000); // Simulate a delay for user feedback
+        
         NavigationManager.NavigateTo("/events");
     }
 }

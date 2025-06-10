@@ -1,0 +1,33 @@
+﻿@using EventEaseApp.Data
+
+<h2 class="mt-4">Registration form</h2>
+
+<EditForm Model="user" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    
+    <div class="mb-3">
+        <label class="form-label">Username</label>
+        <InputText class="form-control" @bind-Value="user.Name" />
+    </div>
+    <div>
+        <label class="form-label">Email</label>
+        <InputText class="form-control" @bind-Value="user.Email" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <InputText type="password" class="form-control" @bind-Value="user.Password" />
+    </div>
+    <button type="submit" class="btn btn-primary">Register me</button>
+</EditForm>
+
+@code {
+    [Parameter] public EventCallback<User> HandleValidSubmit { get; set; }
+
+    private User user = new ();
+
+    private void OnValidSubmit()
+    {
+        HandleValidSubmit.InvokeAsync(user);
+    }
+}
