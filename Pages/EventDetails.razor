@@ -1,12 +1,17 @@
 ﻿@page "/event/{id:int}/details"
 
-@layout ProtectedLayout
-
+@using EventEaseApp.Components
 @using EventEaseApp.Data
 @using EventEaseApp.Services
 
 @inject NavigationManager NavigationManager
 @inject IEventService EventService
+@inject IUserService UserService
+
+@if (!UserService.IsAuthenticated)
+{
+    <RedirectToHome />
+}
 
 <h3>Event Details</h3>
 

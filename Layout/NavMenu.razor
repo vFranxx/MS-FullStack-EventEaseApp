@@ -1,6 +1,7 @@
 ﻿@using EventEaseApp.Data
 @using EventEaseApp.Services
 
+@inject NavigationManager NavigationManager
 @inject IUserService UserService
 
 @implements IDisposable
@@ -67,5 +68,6 @@
     {
         await UserService.Logout();
         StateHasChanged(); // Refresh the UI after logout
+        NavigationManager.NavigateTo("/");
     }
 }

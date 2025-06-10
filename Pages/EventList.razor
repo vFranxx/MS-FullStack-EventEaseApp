@@ -1,7 +1,5 @@
 ﻿@page "/events"
 
-@layout ProtectedLayout
-
 @using EventEaseApp.Components.Events
 @using EventEaseApp.Data
 @using EventEaseApp.Components
@@ -9,6 +7,12 @@
 
 @inject NavigationManager NavigationManager
 @inject IEventService EventService
+@inject IUserService UserService
+
+@if(!UserService.IsAuthenticated)
+{
+    <RedirectToHome />
+}
 
 <h1>EventList</h1>
 

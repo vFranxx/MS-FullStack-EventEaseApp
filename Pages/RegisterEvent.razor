@@ -1,12 +1,17 @@
 ﻿@page "/registerEvent"
 
-@layout ProtectedLayout
-
+@using EventEaseApp.Components
 @using EventEaseApp.Data
 @using EventEaseApp.Services
 
 @inject NavigationManager NavigationManager
 @inject IEventService EventService
+@inject IUserService UserService
+
+@if (!UserService.IsAuthenticated)
+{
+    <RedirectToHome />
+}
 
 <h1 class="mb-3">RegisterEvent</h1>
 
