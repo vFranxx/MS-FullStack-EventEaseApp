@@ -15,11 +15,17 @@
 
 <AttendanceTrackerComponent Events="events" />
 
+@if (events.Count == 0)
+{
+ <p>There are no registered events.</p>    
+}
+
 @code {
     private List<Event> events = new();
 
     protected override async Task OnInitializedAsync()
     {
+        await EventService.LoadAsync();
         events = await EventService.GetTasksAsync();
     }
 }

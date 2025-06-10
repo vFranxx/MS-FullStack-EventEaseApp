@@ -7,5 +7,6 @@ namespace EventEaseApp.Services
         Task<List<Event>> GetTasksAsync();
         Task<Event> GetEventByIdAsync(int id);
         Task AddEventAsync(Event newEvent);
+        Task LoadAsync();
     }
 }
