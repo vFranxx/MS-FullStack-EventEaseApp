@@ -10,5 +10,6 @@ namespace EventEaseApp.Services
         event Action OnChange;
         User? CurrentUser { get; }  
         bool IsAuthenticated { get; }
+        Task InitializeAsync();
     }
 }

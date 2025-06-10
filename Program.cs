@@ -15,4 +15,7 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddSingleton<IEventService, EventService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
-await builder.Build().RunAsync();
+var host = builder.Build();
+var userService = host.Services.GetRequiredService<IUserService>();
+await userService.InitializeAsync();
+await host.RunAsync();

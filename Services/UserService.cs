@@ -70,5 +70,15 @@ namespace EventEaseApp.Services
         }
 
         private void NotifyStateChanged() => OnChange?.Invoke();
+
+        public async Task InitializeAsync()
+        {
+            var storedUsers = await _localStorage.GetItemAsync<List<User>>("users");
+            if (storedUsers != null)
+                users = storedUsers;
+
+            CurrentUser = await _localStorage.GetItemAsync<User>("currentUser");
+            NotifyStateChanged();
+        }
     }
 }
