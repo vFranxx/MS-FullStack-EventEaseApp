@@ -1,0 +1,18 @@
+@page "/attendance"
+
+@using EventEaseApp.Components.Events
+@using EventEaseApp.Data
+@using EventEaseApp.Services
+
+@inject IEventService EventService
+
+<AttendanceTrackerComponent Events="events" />
+
+@code {
+    private List<Event> events = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        events = await EventService.GetTasksAsync();
+    }
+}

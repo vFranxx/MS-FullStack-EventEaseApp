@@ -14,6 +14,7 @@ builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddSingleton<IEventService, EventService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAttendanceService, AttendanceService>();
 
 var host = builder.Build();
 var userService = host.Services.GetRequiredService<IUserService>();

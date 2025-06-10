@@ -1,0 +1,27 @@
+﻿@using EventEaseApp.Data
+@using EventEaseApp.Services
+
+@inject IAttendanceService AttendanceService
+@inject IUserService UserService
+
+<h3>Event Attendance</h3>
+@foreach (var ev in Events)
+{
+    <div>
+        <strong>@ev.Title</strong> (@ev.Date.ToShortDateString())
+        <button @onclick="() => MarkAttendance(ev.Id)">Mark Attendance</button>
+        <div>Attendees: @AttendanceService.GetAttendancesForEvent(ev.Id).Count()</div>
+    </div>
+}
+
+@code {
+    [Parameter] public List<Event> Events { get; set; } = new();
+
+    private int CurrentUserId => UserService.CurrentUser?.Id ?? 0;
+
+    private async Task MarkAttendance(int eventId)
+    {
+        await AttendanceService.MarkAttendance(eventId, CurrentUserId);
+        StateHasChanged(); // Refresh UI to show updated count
+    }
+}
