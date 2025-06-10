@@ -9,7 +9,7 @@
 {
     <div>
         <strong>@ev.Title</strong> (@ev.Date.ToShortDateString())
-        <button @onclick="() => MarkAttendance(ev.Id)">Mark Attendance</button>
+        <button @onclick="() => MarkAttendance(ev.Id)" class="mx-2 btn btn-primary">Mark Attendance</button>
         <div>Attendees: @AttendanceService.GetAttendancesForEvent(ev.Id).Count()</div>
     </div>
 }
