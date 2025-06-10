@@ -14,21 +14,21 @@
 
     <div class="mb-3">
         <label class="form-label">Event Name</label>
-        <InputText class="form-control" @bind-Value="@eventName" />
+        <InputText class="form-control" @bind-Value="evnt.Title" />
     </div>
     <div class="mb-3">
         <label class="form-label">Event Date</label>
-        <InputDate class="form-control" @bind-Value="@eventDate" />
+        <InputDate class="form-control" @bind-Value="evnt.Date" />
     </div>
     <div class="mb-3">
         <label class="form-label">Event Location</label>
-        <InputText class="form-control" @bind-Value="@eventLocation" />
+        <InputText class="form-control" @bind-Value="evnt.Location" />
     </div>
     <div class="mb-3">
         <label class="form-label">Event Description</label>
-        <InputTextArea class="form-control" @bind-Value="@eventDescription" />
+        <InputTextArea class="form-control" @bind-Value="evnt.Description" />
     </div>
-    <button type="submit" class="btn btn-primary">Register Event</button>
+    <button type="submit" class="mb-2 btn btn-primary">Register Event</button>
 </EditForm>
 
 @if (isSuccess)
@@ -40,24 +40,10 @@
 
 @code {
     private Event evnt = new(); 
-
-    private string eventName;
-    private DateTime eventDate = DateTime.Now;
-    private string eventLocation;
-    private string eventDescription;
-
     private bool isSuccess = false;
 
     private async Task HandleValidSubmit()
     {
-        evnt = new Event
-        {
-            Title = eventName,
-            Date = eventDate,
-            Location = eventLocation,
-            Description = eventDescription
-        };
-
         await EventService.AddEventAsync(evnt);
         
         isSuccess = true;
